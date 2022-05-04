@@ -77,7 +77,7 @@ async function checkForRememberedUser() {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
   if (!token || !username) return false;
-  
+
   // try to log in with these credentials (will be null if login failed)
   currentUser = await User.loginViaStoredCredentials(token, username);
 }
@@ -131,7 +131,7 @@ async function clickFavorite(event) {
     else if (event.target.checked === false) {
       currentUser.favorites = await currentUser.removeFavorite(currentUser, storyId);
     }
-    
+
   }
   else return;
 
@@ -149,10 +149,16 @@ async function deleteStory(event) {
     //the deleteUserStory method on the User class is called
     const deletedStory = await currentUser.deleteUserStory(currentUser, storyId);
 
-    //the users own stories list is pulled from the api
-    
-    const storyIndex = currentUser.ownStories.indexOf(deletedStory);
-    currentUser.ownStories.splice(storyIndex, 1);
+
+
+    // updates the user's stories
+    currentUser.ownStories = currentUser.ownStories.filter(el => {
+
+      return el.storyId !== deletedStory.storyId
+    });
+
+    //updates the user's favorites list
+    currentUser.favorites = currentUser.favorites.filter(el => { return el.storyId !== deletedStory.storyId });
 
   }
 

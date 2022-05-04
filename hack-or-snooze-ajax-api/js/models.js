@@ -258,7 +258,7 @@ class User {
       }
     })
 
-    return response.data.story;
+    return new Story (response.data.story);
   }
 
 }

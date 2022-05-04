@@ -122,6 +122,7 @@ async function submitNewStory(evt) {
     $storyForm.hide();
     putStoriesOnPage();
     currentUser.ownStories.push(newStory);
+    $storyForm.trigger("reset");
   }
   else return;
 }
